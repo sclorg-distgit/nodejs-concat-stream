@@ -1,0 +1,116 @@
+From 6f84bc49f32fb8c50b8a23e9277a693b18ad3e48 Mon Sep 17 00:00:00 2001
+From: Jamie Nguyen <j@jamielinux.com>
+Date: Thu, 13 Mar 2014 16:23:51 +0000
+Subject: [PATCH] Remove dependency on npm(typedarray)
+
+---
+ index.js           | 4 +---
+ package.json       | 3 +--
+ test/buffer.js     | 4 +---
+ test/string.js     | 4 +---
+ test/typedarray.js | 8 +++-----
+ 5 files changed, 7 insertions(+), 16 deletions(-)
+
+diff --git a/index.js b/index.js
+index f9da8d2..91d004e 100644
+--- a/index.js
++++ b/index.js
+@@ -1,7 +1,5 @@
+ var Writable = require('stream').Writable
+ var inherits = require('inherits')
+-var TA = require('typedarray')
+-var U8 = typeof Uint8Array !== 'undefined' ? Uint8Array : TA.Uint8Array
+ 
+ function ConcatStream(opts, cb) {
+   if (!(this instanceof ConcatStream)) return new ConcatStream(opts, cb)
+@@ -122,7 +120,7 @@ function u8Concat (parts) {
+     }
+     len += parts[i].length
+   }
+-  var u8 = new U8(len)
++  var u8 = new Uint8Array(len)
+   for (var i = 0, offset = 0; i < parts.length; i++) {
+     var part = parts[i]
+     for (var j = 0; j < part.length; j++) {
+diff --git a/package.json b/package.json
+index f84ce76..bf182f5 100644
+--- a/package.json
++++ b/package.json
+@@ -25,8 +25,7 @@
+   },
+   "license": "MIT",
+   "dependencies": {
+-    "inherits": "~2.0.1",
+-    "typedarray": "~0.0.5"
++    "inherits": "~2.0.1"
+   },
+   "devDependencies": {
+     "tape": "~2.3.2"
+diff --git a/test/buffer.js b/test/buffer.js
+index d28f5f9..b408158 100644
+--- a/test/buffer.js
++++ b/test/buffer.js
+@@ -1,7 +1,5 @@
+ var concat = require('../')
+ var test = require('tape')
+-var TA = require('typedarray')
+-var U8 = typeof Uint8Array !== 'undefined' ? Uint8Array : TA.Uint8Array
+ 
+ test('buffer stream', function (t) {
+   t.plan(2)
+@@ -23,7 +21,7 @@ test('buffer mixed writes', function (t) {
+   buffers.write(new Buffer('pizza'))
+   buffers.write(' Array is not a ')
+   buffers.write([ 115, 116, 114, 105, 110, 103, 121 ])
+-  var u8 = new U8(4)
++  var u8 = new Uint8Array(4)
+   u8[0] = 32; u8[1] = 99; u8[2] = 97; u8[3] = 116
+   buffers.write(u8)
+   buffers.write(555)
+diff --git a/test/string.js b/test/string.js
+index 1fccb61..3ce41b0 100644
+--- a/test/string.js
++++ b/test/string.js
+@@ -1,7 +1,5 @@
+ var concat = require('../')
+ var test = require('tape')
+-var TA = require('typedarray')
+-var U8 = typeof Uint8Array !== 'undefined' ? Uint8Array : TA.Uint8Array
+ 
+ test('string -> buffer stream', function (t) {
+   t.plan(2)
+@@ -44,7 +42,7 @@ test('string from mixed write encodings', function (t) {
+   strings.write('na')
+   strings.write(Buffer('cho'))
+   strings.write([ 32, 100 ])
+-  var u8 = new U8(3)
++  var u8 = new Uint8Array(3)
+   u8[0] = 111; u8[1] = 103; u8[2] = 115;
+   strings.end(u8)
+ })
+diff --git a/test/typedarray.js b/test/typedarray.js
+index ee07110..db24df1 100644
+--- a/test/typedarray.js
++++ b/test/typedarray.js
+@@ -1,15 +1,13 @@
+ var concat = require('../')
+ var test = require('tape')
+-var TA = require('typedarray')
+-var U8 = typeof Uint8Array !== 'undefined' ? Uint8Array : TA.Uint8Array
+ 
+ test('typed array stream', function (t) {
+   t.plan(2)
+-  var a = new U8(5)
++  var a = new Uint8Array(5)
+   a[0] = 97; a[1] = 98; a[2] = 99; a[3] = 100; a[4] = 101;
+-  var b = new U8(3)
++  var b = new Uint8Array(3)
+   b[0] = 32; b[1] = 102; b[2] = 103;
+-  var c = new U8(4)
++  var c = new Uint8Array(4)
+   c[0] = 32; c[1] = 120; c[2] = 121; c[3] = 122;
+ 
+   var arrays = concat({ encoding: 'Uint8Array' }, function(out) {
+-- 
+1.8.5.3
+
