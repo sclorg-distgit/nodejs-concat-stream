@@ -1,0 +1,37 @@
+From fecccf01809dff7ff0674e6d0ae1124183f19b3c Mon Sep 17 00:00:00 2001
+From: Jamie Nguyen <j@jamielinux.com>
+Date: Thu, 13 Mar 2014 16:15:30 +0000
+Subject: [PATCH] Use 'stream' from Node.js core
+
+---
+ index.js     | 2 +-
+ package.json | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/index.js b/index.js
+index fce2ba9..f9da8d2 100644
+--- a/index.js
++++ b/index.js
+@@ -1,4 +1,4 @@
+-var Writable = require('readable-stream').Writable
++var Writable = require('stream').Writable
+ var inherits = require('inherits')
+ var TA = require('typedarray')
+ var U8 = typeof Uint8Array !== 'undefined' ? Uint8Array : TA.Uint8Array
+diff --git a/package.json b/package.json
+index 7b5690c..f84ce76 100644
+--- a/package.json
++++ b/package.json
+@@ -26,8 +26,7 @@
+   "license": "MIT",
+   "dependencies": {
+     "inherits": "~2.0.1",
+-    "typedarray": "~0.0.5",
+-    "readable-stream": "~1.1.9"
++    "typedarray": "~0.0.5"
+   },
+   "devDependencies": {
+     "tape": "~2.3.2"
+-- 
+1.8.5.3
+
