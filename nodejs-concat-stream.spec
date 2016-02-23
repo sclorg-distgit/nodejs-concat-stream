@@ -7,7 +7,7 @@
 
 Name:       %{?scl_prefix}nodejs-concat-stream
 Version:    1.4.4
-Release:    5%{?dist}
+Release:    6%{?dist}
 Summary:    Writable stream that concatenates data and calls a callback with the result
 License:    MIT
 Group:      System Environment/Libraries
@@ -68,6 +68,9 @@ cp -pr package.json index.js \
 %{nodejs_sitelib}/concat-stream
 
 %changelog
+* Sun Feb 14 2016 Zuzana Svetlikova <zsvetlik@redhat.com> - 1.4.4-6
+- rebuilt
+
 * Tue Dec 01 2015 Tomas Hrcka <thrcka@redhat.com> - 1.4.4-5
 - Enable SCL macros
 
